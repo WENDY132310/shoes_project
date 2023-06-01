@@ -115,7 +115,7 @@ class pagar:
             metodo = "Tarjeta de credito"
             metodopago(metodo)
             abono = valorpago()
-            tarjeta.tarjeta(root, metodo)
+            tarjeta.tarjeta(root)
             inbox_frame_ab.grid_forget()
             frame_pago.destroy()
 

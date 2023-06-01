@@ -1,34 +1,34 @@
 from tkinter import *
 
 class tarjeta:
-    def __init__(self, root,metodo_pags):
+    def __init__(self, root):
         global frame_tarjeta
         frame_tarjeta = Toplevel(root)
         numero_tarjeta= StringVar()
         cuotas= StringVar()
 
-        frame_tarjeta.configure(bg="#27AEF2")
+        frame_tarjeta.configure(bg="#000000")
         frame_tarjeta.title("Pago con tarjeta de credito")
         frame_tarjeta.geometry("+350+80")
         frame_tarjeta.resizable(0, 0)
 
-        inbox_frame = LabelFrame(frame_tarjeta, bg="#53CDB8", width=300, height=80, padx=4, pady=5)
+        inbox_frame = LabelFrame(frame_tarjeta, bg="#EFEDB1", width=300, height=80, padx=4, pady=5)
         inbox_frame.grid(row=1, column=0)
 
-        inbox_ = LabelFrame(frame_tarjeta, bg="#53CDB8", width=300, height=80, padx=4, pady=5)
+        inbox_ = LabelFrame(frame_tarjeta, bg="#EFEDB1", width=300, height=80, padx=4, pady=5)
         inbox_.grid(row=2, column=0)
 
-        button_frame = LabelFrame(frame_tarjeta, bg="#53CDB8")
+        button_frame = LabelFrame(frame_tarjeta, bg="#EFEDB1")
         button_frame.grid(row=3, column=0)
 
-        Label(inbox_frame, text='Ingresa los datos de tu tarjeta', bg="#53CDB8", font=("Verdana MS", "30", "bold")).grid(
+        Label(inbox_frame, text='Ingresa los datos de tu tarjeta', bg="#EFEDB1", font=("Verdana MS", "30", "bold")).grid(
             row=0,
             column=0)
 
-        Label(inbox_, text='Numero de la tarjeta', bg="#53CDB8", font=("Verdana MS", "11", "bold")).grid(
+        Label(inbox_, text='Numero de la tarjeta', bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(
             row=1,
             column=0)
-        Label(inbox_, text='Numero de cuotas', bg="#53CDB8", font=("Verdana MS", "11", "bold")).grid(
+        Label(inbox_, text='Numero de cuotas', bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(
             row=1,
             column=1)
 

@@ -421,7 +421,7 @@ class produc:
             if val_modify == []:
                 no_found(var)
             else:
-                TopLevelModify(Frame_pro, val_modify)
+                TopLevelModify1(Frame_pro, val_modify)
 
         # ----------------- BUTTON FUNCTIONS ------------------
         def add():
@@ -953,4 +953,162 @@ class TopLevelModify():
                 writer = csv.writer(f, lineterminator='\r', delimiter=',')
                 for i, row in enumerate(reader):
                     if nombre_maquina != row[0]:
+                        writer.writerow(row)
+class TopLevelModify1:
+    def __init__(self, root, val_modify):
+        self.root_window = root
+        self.val_modify = val_modify
+        self.name = str(self.val_modify[0])
+        self.reference = str(self.val_modify[1])
+        self.vol = str(self.val_modify[2])
+        self.pot = str(self.val_modify[3])
+        self.tam = str(self.val_modify[4])
+        self.pres = str(self.val_modify[5])
+        self.cap = str(self.val_modify[6])
+        self.des = str(self.val_modify[7])
+
+        window_modify = Toplevel(self.root_window)
+        window_modify.title("Modificar maquina")
+        window_modify.configure(bg="#000000")
+        window_modify.geometry("+400+400")
+        window_modify.resizable(0, 0)
+
+        # ---------------- FRAMES DECLARATION -----------------
+        text_frame = LabelFrame(window_modify, bg="#EFEDB1")
+        text_frame.grid(row=0, column=0)
+
+        button_frame = LabelFrame(window_modify, bg="#EFEDB1")
+        button_frame.grid(row=2, column=0)
+
+        # --------------- LABELS WIDGETS ZONE -----------------
+        Label(text_frame, text="Desea modificar esta maquina?", bg="#EFEDB1",
+              font=("verdana", "11", "normal")).grid(row=0, column=0, columnspan=3)
+        Label(text_frame, text=self.name, bg="#EFEDB1", font=("verdana", "11", "bold")).grid(row=1,
+                                                                                                   column=0)
+        Label(text_frame, text=self.reference, bg="#EFEDB1", font=("verdana", "11", "bold")).grid(row=1,
+                                                                                                    column=1)
+        Label(text_frame, text=self.vol, bg="#EFEDB1", font=("verdana", "11", "bold")).grid(row=1,
+                                                                                                    column=2)
+        Label(text_frame, text=self.pot, bg="#EFEDB1", font=("verdana", "11", "bold")).grid(row=1,
+                                                                                             column=3)
+        Label(text_frame, text=self.tam, bg="#EFEDB1", font=("verdana", "11", "bold")).grid(row=2,
+                                                                                                  column=0)
+        Label(text_frame, text=self.pres, bg="#EFEDB1", font=("verdana", "11", "bold")).grid(row=2,
+                                                                                            column=1)
+        Label(text_frame, text=self.cap, bg="#EFEDB1", font=("verdana", "11", "bold")).grid(row=2,
+                                                                                             column=2)
+
+
+        # --------------- INBOX WIDGETS ZONE ------------------
+        Label(text_frame, text='Ingrese el nuevo nombre', bg="#EFEDB1", font=("Comic Sans MS", "11", "normal")).grid(
+            row=3,
+            column=0)
+        n_inbox_name = Entry(text_frame, font=("verdana", "11", "normal"), width=28)
+        n_inbox_name.grid(row=4, column=0)
+        n_inbox_name.focus()
+
+        Label(text_frame, text='Ingrese la nueva referencia', bg="#EFEDB1", font=("Comic Sans MS", "11", "normal")).grid(
+            row=3,
+            column=1)
+        n_inbox_ref = Entry(text_frame, font=("Verdana", "11", "normal"), width=20)
+        n_inbox_ref.grid(row=4, column=1)
+
+        Label(text_frame, text='Ingrese el  voltaje', bg="#EFEDB1", font=("Verdana", "11", "normal")).grid(
+            row=3,
+            column=2)
+        n_inbox_vol = Entry(text_frame, font=("Verdana", "11", "normal"), width=30)
+        n_inbox_vol.grid(row=4, column=2)
+
+        Label(text_frame, text='ingrese la potencia', bg="#EFEDB1", font=("Verdana", "11", "normal")).grid(
+            row=3,
+            column=3)
+        n_inbox_pot = Entry(text_frame, font=("Verdana", "11", "normal"), width=30)
+        n_inbox_pot.grid(row=4, column=3)
+        Label(text_frame, text='ingrese el tamaño de la maquina', bg="#EFEDB1", font=("Verdana", "11", "normal")).grid(
+            row=5,
+            column=0)
+        n_inbox_tam = Entry(text_frame, font=("Verdana", "11", "normal"), width=30)
+        n_inbox_tam.grid(row=6, column=0)
+
+        Label(text_frame, text='ingrese la presion', bg="#EFEDB1", font=("Verdana", "11", "normal")).grid(
+            row=5,
+            column=1)
+        n_inbox_pres = Entry(text_frame, font=("Verdana", "11", "normal"), width=30)
+        n_inbox_pres.grid(row=6, column=1)
+        Label(text_frame, text='ingrese la cantidad de produccion', bg="#EFEDB1", font=("Verdana", "11", "normal")).grid(
+            row=5,
+            column=2)
+        n_inbox_cant = Entry(text_frame, font=("Verdana", "11", "normal"), width=30)
+        n_inbox_cant.grid(row=6, column=2)
+        Label(text_frame, text='ingrese la descripcion', bg="#EFEDB1", font=("Verdana", "11", "normal")).grid(
+            row=5,
+            column=3)
+        n_inbox_des = Entry(text_frame, font=("Verdana", "11", "normal"), width=30)
+        n_inbox_des.grid(row=6, column=3)
+
+        def modify_mesageBox(contact):
+            var_name = str(contact[0])
+            var_phone = str(contact[1])
+
+            search = MessageBox.askquestion("Alerta de modificacion",
+                                            "Desea guardar los cambios realizados en este registro?\n" + " Nombre de maquina: " + var_name + "\n referencia: " + var_phone)
+            if search == "yes":
+                return True
+            else:
+                return False
+
+        # --------------- BUTTON WIDGETS ZONE -----------------
+        yes_button = Button(button_frame, command=lambda: yes(), text='Yes', width=20)
+        yes_button.configure(bg="#EFEDB1", cursor='hand2', font=("Verdana", "10", "normal"))
+        yes_button.grid(row=1, column=0, padx=2, pady=3, sticky=W + E)
+
+        no_button = Button(button_frame, command=window_modify.destroy, text='No', width=20, bg="#EFEDB1",
+                           cursor='hand2')
+        no_button.configure(bg="#EFEDB1", cursor='hand2', font=("Verdana", "10", "normal"))
+        no_button.grid(row=1, column=1, padx=2, pady=3, sticky=W + E)
+
+        cancel_button = Button(button_frame, command=window_modify.destroy, text='Cancel', width=20, bg="#EFEDB1",
+                               cursor='hand2')
+        cancel_button.configure(bg="#FFBB20", cursor='hand2', font=("Verdana", "10", "normal"))
+        cancel_button.grid(row=1, column=2, padx=2, pady=3, sticky=W + E)
+
+        # ----------------- BUTTON FUNCTIONS ------------------
+        def yes():
+            machine = self.val_modify
+            new_name = n_inbox_name.get()
+            new_ref = n_inbox_ref.get()
+            new_vol = n_inbox_vol.get()
+            new_pot = n_inbox_pot.get()
+            new_pres = n_inbox_pres.get()
+            new_des = n_inbox_des.get()
+            new_tam = n_inbox_tam.get()
+            new_cant = n_inbox_cant.get()
+
+            a = modify_mesageBox(machine)
+            if a:
+                _del_old(machine[0])
+                _add_new(new_name, new_ref, new_vol,new_pot,new_tam,new_pres,new_cant,new_des)
+            window_modify.destroy()
+
+        def _add_new(name, reference, voltaje, potence, size, presion, capacidad, descripcion):
+            s_name = name
+            s_refe = reference
+            s_vol = voltaje
+            s_pot= potence
+            s_size= size
+            s_pres= presion
+            s_cap= capacidad
+            s_desc= descripcion
+            with open('machine_list.csv', 'a') as f:
+                writer = csv.writer(f, lineterminator='\r', delimiter=',')
+                writer.writerow((s_name, s_refe, s_vol, s_pot, s_size, s_pres, s_cap, s_desc))
+
+        def _del_old(old_name):
+            name = old_name
+            with open('machine_list.csv', 'r') as f:
+                reader = list(csv.reader(f))
+            with open('machine_list.csv', 'w') as f:
+                writer = csv.writer(f, lineterminator='\r', delimiter=',')
+                for i, row in enumerate(reader):
+                    if name != row[0]:
                         writer.writerow(row)
