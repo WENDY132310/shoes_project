@@ -839,14 +839,13 @@ class rendimiento:
 class TopLevelModify():
     def __init__(self, root, val_modify):
         self.root_window = root
-        self.configure(bg="#000000")
         self.val_modify = val_modify
-        self.tipo = str(self.val_modify[0])
-        self.valor = str(self.val_modify[1])
-        self.fecha = str(self.val_modify[2])
-        self.fecha_n =str(self.val_modify[3])
+        self.nombre_maquina = str(self.val_modify[0])
+        self.referencia = str(self.val_modify[1])
+        self.fecha_ult = str(self.val_modify[2])
+        self.fecha_new =str(self.val_modify[3])
 
-        window_modify = Toplevel(self)
+        window_modify = Toplevel(self.root_window)
         window_modify.title("Modificar registro")
         window_modify.configure(bg="#000000")
         window_modify.geometry("+400+100")

@@ -170,7 +170,6 @@ class venta:
         filemenu = Menu(menubar, tearoff=0, bg="#FFBB20")
         filemenu.add_command(label="mostrar registro de pedidos", command=lambda: cont(),
                              font=("Helveltica", "9", "normal"))
-        filemenu.add_command(label="User manual", font=("Helveltica", "9", "normal"))
         filemenu.add_separator()
         filemenu.add_command(label="Close", command=frame_venta.quit, font=("Helveltica", "9", "normal"))
 

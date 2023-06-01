@@ -1,7 +1,6 @@
 from tkinter import *
 import tkinter as tk
 import compras, Produccion
-from PIL import ImageTk, Image, ImageColor
 
 class login:
 
@@ -27,15 +26,7 @@ class login:
         produccion_button.configure(bg="#EFEDB1", cursor='hand2', font=("Verdana", "10", "bold"))
         produccion_button.grid(row=1, column=1, padx=2, pady=6, sticky=W + E)
 
-        image1 = Image.open("imagenes/log.png")
-        resized_image = image1.resize((300, 205), Image.ANTIALIAS)
-        test = ImageTk.PhotoImage(resized_image)
 
-        label1 = tk.Label(inbox_frame, image=test)
-        label1.image = test
-
-        # Position image
-        label1.grid(padx=5,pady=5)
 
         def Produccionlog():
             Produccion.produccion(root)
