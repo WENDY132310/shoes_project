@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../BD_project/.idea/BD_project.iml" filepath="$PROJECT_DIR$/../BD_project/.idea/BD_project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../BD_project_avance/.idea/BD_project_avance.iml" filepath="$PROJECT_DIR$/../BD_project_avance/.idea/BD_project_avance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../BarberoDormilon/.idea/BarberoDormilon.iml" filepath="$PROJECT_DIR$/../BarberoDormilon/.idea/BarberoDormilon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Proyecto_final.iml" filepath="$PROJECT_DIR$/.idea/Proyecto_final.iml" />
+      <module fileurl="file://$USER_HOME$/Documents/Sleeping-Barber-Problem-Solution-master/.idea/Sleeping-Barber-Problem-Solution-master.iml" filepath="$USER_HOME$/Documents/Sleeping-Barber-Problem-Solution-master/.idea/Sleeping-Barber-Problem-Solution-master.iml" />
+    </modules>
+  </component>
+</project>
