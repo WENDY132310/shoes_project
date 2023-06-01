@@ -6,17 +6,17 @@ import csv
 def alphabetic_order():
     my_order = []
     my_row = []
-    with open('machine_list.csv', 'r') as f:
+    with open('machine_list.csv', 'r',encoding='utf-8') as f:
         reader = csv.reader(f)
         for i, row in enumerate(reader):
             name = str(row[0])
             reference = str(row[1])
             voltaje = str(row[2])
             potence = str(row[3])
-            capacidad = str(row[4])
+            capacidad = str(row[6])
             presion = str(row[5])
-            descripcion = str(row[6])
-            size = str(row[7])
+            descripcion = str(row[7])
+            size = str(row[4])
             my_row = [name, reference, voltaje, potence, size,  presion, capacidad, descripcion]
             my_order.append(my_row)
     alphabetic_order_list = ordenamiento_por_mezcla(my_order)
@@ -63,7 +63,7 @@ def ordenamiento_por_mezcla(lista):
 def alphabetic_order_ped():
     my_order = []
     my_row = []
-    with open('Lista_registros_compras.csv', 'r') as f:
+    with open('Lista_registros_compras.csv', 'r',encoding='utf-8') as f:
         reader = csv.reader(f)
         for i, row in enumerate(reader):
             tipo = str(row[0])
@@ -77,7 +77,7 @@ def alphabetic_order_ped():
 def alphabetic_order_man():
     my_order = []
     my_row = []
-    with open('registro_mant.csv', 'r') as f:
+    with open('registro_mant.csv', 'r',encoding='utf-8') as f:
         reader = csv.reader(f)
         for i, row in enumerate(reader):
             tipo = str(row[0])

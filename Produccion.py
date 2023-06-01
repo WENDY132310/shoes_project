@@ -41,7 +41,7 @@ class produccion:
             s_nombre_maquina = user
             s_referencia = password
 
-            with open('Lista_prod.csv', 'a') as f:
+            with open('Lista_prod.csv', 'a',encoding='utf-8') as f:
                 writer = csv.writer(f, lineterminator='\r', delimiter=',')
                 writer.writerow((s_nombre_maquina, s_referencia))
 
@@ -296,7 +296,7 @@ class produc:
                                       columns=("one", "two", "three", "four", "five", "six"))
         Frame_pro.tree.grid(padx=2, pady=5, row=0, column=0)
 
-        Frame_pro.tree.column("#0", width=135, anchor=CENTER)
+        Frame_pro.tree.column("#0", width=200, anchor=CENTER)
         Frame_pro.tree.column("one", width=85, anchor=CENTER)
         Frame_pro.tree.column("two", width=85, anchor=CENTER)
         Frame_pro.tree.column("three", width=100, anchor=CENTER)
@@ -347,10 +347,10 @@ class produc:
                 reference = str(row[1])
                 voltaje = str(row[2])
                 potence = str(row[3])
-                capacidad = str(row[4])
+                capacidad = str(row[6])
                 presion = str(row[5])
-                descripcion = str(row[6])
-                size = str(row[7])
+                descripcion = str(row[7])
+                size = str(row[4])
                 Frame_pro.tree.insert("", 0, text=nombre_maquina,
                                       values=(reference, voltaje, potence, size, presion, capacidad, descripcion))
 
@@ -363,7 +363,7 @@ class produc:
             s_pres = presion
             s_des = descripcion
             s_size = size
-            with open('machine_list.csv', 'a') as f:
+            with open('machine_list.csv', 'a', encoding='utf-8') as f:
                 writer = csv.writer(f, lineterminator='\r', delimiter=',')
                 writer.writerow((s_nombre_maquina, s_ref, s_vol, s_pot, s_size, s_pres, s_cap, s_des))
 
@@ -371,7 +371,7 @@ class produc:
             my_list = []
             s_var_inbox = str(var_inbox)
             var_possition = int(possition)
-            with open('machine_list.csv', 'r') as f:
+            with open('machine_list.csv', 'r',encoding='utf-8') as f:
                 reader = csv.reader(f)
                 for i, row in enumerate(reader):
                     if s_var_inbox == row[var_possition]:
@@ -517,9 +517,9 @@ class produc:
             nombre_maquina = str(inbox_nombre_maquina.get())
             a = delete_mesageBox(nombre_maquina)
             if a:
-                with open('machine_list.csv', 'r') as f:
+                with open('machine_list.csv', 'r',encoding='utf-8') as f:
                     reader = list(csv.reader(f))
-                with open('machine_list.csv', 'w') as f:
+                with open('machine_list.csv', 'w',encoding='utf-8') as f:
                     writer = csv.writer(f, lineterminator='\r', delimiter=',')
                     for i, row in enumerate(reader):
                         if nombre_maquina != row[0]:
@@ -947,9 +947,9 @@ class TopLevelModify():
 
         def _del_old(old_nombre_maquina):
             nombre_maquina = old_nombre_maquina
-            with open('registro_mant.csv', 'r') as f:
+            with open('registro_mant.csv', 'r',encoding='utf-8') as f:
                 reader = list(csv.reader(f))
-            with open('registro_mant.csv', 'w') as f:
+            with open('registro_mant.csv', 'w',encoding='utf-8') as f:
                 writer = csv.writer(f, lineterminator='\r', delimiter=',')
                 for i, row in enumerate(reader):
                     if nombre_maquina != row[0]:
