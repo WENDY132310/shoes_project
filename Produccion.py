@@ -6,6 +6,7 @@ from tkinter import *
 from tkinter import messagebox as MessageBox
 from tkinter import ttk
 import orden
+from datetime import date, datetime
 
 
 class produccion:
@@ -195,6 +196,7 @@ class produc:
         def nav():
             rendimiento(root)
             Frame_pro.withdraw()
+
         # ---------------- FRAMES DECLARATION -----------------
         inbox_frame = LabelFrame(Frame_pro, bg="#EFEDB1")
         inbox_frame.grid(row=0, column=0)
@@ -628,12 +630,13 @@ class rendimiento:
 
         # --------------- TREE DIRECTORY ZONE -----------------
         # Table for database
-        self.tree = ttk.Treeview(three_frame, height=20, columns=("one", "two","three"))
+        self.tree = ttk.Treeview(three_frame, height=20, columns=("one", "two", "three", "four"))
         self.tree.grid(padx=5, pady=5, row=0, column=0, columnspan=1)
         self.tree.heading("#0", text='Nombre_maquina', anchor=CENTER)
         self.tree.heading("one", text='Referencia', anchor=CENTER)
         self.tree.heading("two", text='Fecha ultimo mantenimiento', anchor=CENTER)
         self.tree.heading("three", text='Fecha nuevo mantenimiento', anchor=CENTER)
+        self.tree.heading("four", text='Dias para el mantenimiento', anchor=CENTER)
 
         # Scroll
         scrollVert = Scrollbar(three_frame, command=self.tree.yview)
@@ -652,31 +655,47 @@ class rendimiento:
             inbox_nombre_maquina.delete(0, 'end')
             inbox_referencia.delete(0, 'end')
             inbox_fecha_ult.delete(0, 'end')
-            inbox_fecha_new.delete(0,'end')
-
+            inbox_fecha_new.delete(0, 'end')
 
         def _clean_treeview():
             tree_list = self.tree.get_children()
             for item in tree_list:
                 self.tree.delete(item)
 
+        def dias(proximo):
+            fecha=proximo.split('/')
+            prox = date(int(fecha[2]), int(fecha[1]), int(fecha[0]))
+            entrada = prox.strftime('%d/%m/%Y')
+            return entrada
+
+        def dias_man(fecha,now):
+
+            days=(fecha-now).days
+            return days
+
         def _view_csv():
-            contacts = orden.alphabetic_order()
+            contacts = orden.alphabetic_order_man()
             for i, row in enumerate(contacts):
                 nombre_maquina = str(row[0])
                 referencia = str(row[1])
                 fecha_ult = str(row[2])
                 fecha_new = str(row[3])
-                self.tree.insert("", 0, text=nombre_maquina, values=(referencia, fecha_ult,fecha_new))
+                faltan = dias(fecha_new)
+                fecha = faltan.split('/')
+                prox = datetime(int(fecha[2]), int(fecha[1]), int(fecha[0]))
+                now = datetime.now()
+                Date_for = dias_man(prox, now)
+                self.tree.insert("", 0, text=nombre_maquina, values=(referencia, fecha_ult, fecha_new,Date_for))
 
-        def _save(nombre_maquina, referencia, fecha_ult,feche_new):
+        def _save(nombre_maquina, referencia, fecha_ult, fecha_new):
             s_nombre_maquina = nombre_maquina
             s_referencia = referencia
             s_fecha_ult = fecha_ult
-            s_fecha_new=feche_new
+            s_fecha_new = fecha_new
+
             with open('registro_mant.csv', 'a') as f:
                 writer = csv.writer(f, lineterminator='\r', delimiter=',')
-                writer.writerow((s_nombre_maquina, s_referencia, s_fecha_ult,s_fecha_new))
+                writer.writerow((s_nombre_maquina, s_referencia, s_fecha_ult, s_fecha_new))
 
         def _search(var_inbox, possition):
             my_list = []
@@ -686,7 +705,7 @@ class rendimiento:
                 reader = csv.reader(f)
                 for i, row in enumerate(reader):
                     if s_var_inbox == row[var_possition]:
-                        my_list = [row[0], row[1], row[2],row[3]]
+                        my_list = [row[0], row[1], row[2], row[3]]
                         break
                     else:
                         continue
@@ -702,16 +721,23 @@ class rendimiento:
                 referencia = str(list_answer[1])
                 fecha_ult = str(list_answer[2])
                 fecha_new = str(list_answer[3])
+                faltan = dias(fecha_new)
+                fecha = faltan.split('/')
+                prox = datetime(int(fecha[2]), int(fecha[1]), int(fecha[0]))
+                now = datetime.now()
+                Date_for = dias_man(prox, now)
                 self.tree.insert("", 0, text="------------------------------",
-                                 values=("------------------------------", "------------------------------","------------------------------"))
-                self.tree.insert("", 0, text=nombre_maquina, values=(referencia, fecha_ult,fecha_new))
+                                 values=("------------------------------", "------------------------------",
+                                         "------------------------------","------------------------------","------------------------------"))
+                self.tree.insert("", 0, text=nombre_maquina, values=(referencia, fecha_ult, fecha_new,Date_for))
                 self.tree.insert("", 0, text="------------------------------",
-                                 values=("------------------------------", "------------------------------","------------------------------"))
+                                 values=("------------------------------", "------------------------------",
+                                         "------------------------------","------------------------------","------------------------------"))
 
         def _check_1(answer, var_search):
             val_modify = answer
             var = var_search
-            if val_modify == []:
+            if not val_modify:
                 no_found(var)
             else:
                 TopLevelModify(frame_rend, val_modify)
@@ -721,9 +747,9 @@ class rendimiento:
             nombre_maquina = inbox_nombre_maquina.get()
             referencia = inbox_referencia.get()
             fecha_ult = inbox_fecha_ult.get()
-            fecha_new=inbox_fecha_new.get()
-            contact_check = [nombre_maquina, referencia, fecha_ult,fecha_new]
-            if contact_check == ['', '', '','']:
+            fecha_new = inbox_fecha_new.get()
+            contact_check = [nombre_maquina, referencia, fecha_ult, fecha_new]
+            if contact_check == ['', '', '', '']:
                 write_nombre_maquina()
             else:
                 if nombre_maquina == '':
@@ -732,14 +758,22 @@ class rendimiento:
                     referencia = '<Default>'
                 if fecha_ult == '':
                     fecha_ult = '<Default>'
-                if fecha_new =='':
-                    fecha_new= '<Default>'
-                _save(nombre_maquina, referencia, fecha_ult,fecha_new)
+                if fecha_new == '':
+                    fecha_new = '<Default>'
+                faltan = dias(fecha_new)
+                fecha = faltan.split('/')
+                prox = datetime(int(fecha[2]), int(fecha[1]), int(fecha[0]))
+                now = datetime.now()
+                Date_for = dias_man(prox, now)
+                _save(nombre_maquina, referencia, fecha_ult, fecha_new)
                 self.tree.insert("", 0, text="------------------------------",
-                                 values=("------------------------------", "------------------------------","------------------------------"))
-                self.tree.insert("", 0, text=str(nombre_maquina), values=(str(referencia), str(fecha_ult),str(fecha_new)))
+                                 values=("------------------------------", "------------------------------",
+                                         "------------------------------","------------------------------" , "------------------------------"))
+                self.tree.insert("", 0, text=str(nombre_maquina),
+                                 values=(str(referencia), str(fecha_ult), str(fecha_new), str(Date_for)))
                 self.tree.insert("", 0, text="------------------------------",
-                                 values=("------------------------------", "------------------------------","------------------------------"))
+                                 values=("------------------------------", "------------------------------",
+                                         "------------------------------","------------------------------","------------------------------"))
             contact_check = []
             _clean_inbox()
 
@@ -776,15 +810,17 @@ class rendimiento:
 
         def show_contacts():
             self.tree.insert("", 0, text="------------------------------",
-                             values=("------------------------------", "------------------------------","------------------------------"))
+                             values=("------------------------------", "------------------------------",
+                                     "------------------------------","------------------------------"))
             _view_csv()
             self.tree.insert("", 0, text="------------------------------",
-                             values=("------------------------------", "------------------------------","------------------------------"))
+                             values=("------------------------------", "------------------------------",
+                                     "------------------------------","------------------------------"))
 
         def delete():
             nombre_maquina = str(inbox_nombre_maquina.get())
             a = delete_mesageBox(nombre_maquina)
-            if a :
+            if a:
                 with open('registro_mant.csv', 'r') as f:
                     reader = list(csv.reader(f))
                 with open('registro_mant.csv', 'w') as f:
@@ -802,22 +838,17 @@ class rendimiento:
 
 class TopLevelModify():
     def __init__(self, root, val_modify):
-        global frame_mantenimiento
-        frame_mantenimiento.val_modify = val_modify
-        frame_mantenimiento = Toplevel(root)
-        frame_mantenimiento.configure(bg="#000000")
-        frame_mantenimiento.title("Mantenimiento")
-        frame_mantenimiento.geometry("+350+80")
-        frame_mantenimiento.resizable(0, 0)
+        self.root_window = root
+        self.configure(bg="#000000")
+        self.val_modify = val_modify
+        self.tipo = str(self.val_modify[0])
+        self.valor = str(self.val_modify[1])
+        self.fecha = str(self.val_modify[2])
+        self.fecha_n =str(self.val_modify[3])
 
-        frame_mantenimiento.nombre_maquina = str(frame_mantenimiento.val_modify[0])
-        frame_mantenimiento.referencia = str(frame_mantenimiento.val_modify[1])
-        frame_mantenimiento.fecha_ult = str(frame_mantenimiento.val_modify[2])
-        frame_mantenimiento.fecha_new = str(frame_mantenimiento.val_modify[3])
-
-        window_modify = Toplevel(frame_mantenimiento)
-        window_modify.title("Modify Contact")
-        window_modify.configure(bg="#EFEDB1")
+        window_modify = Toplevel(self)
+        window_modify.title("Modificar registro")
+        window_modify.configure(bg="#000000")
         window_modify.geometry("+400+100")
         window_modify.resizable(0, 0)
 
@@ -827,7 +858,7 @@ class TopLevelModify():
             var_fecha_ult = str(contact[2])
             var_fecha_new = str(contact[3])
             search = MessageBox.askquestion("Alerta de modificacion",
-                                            "Desea guardar los cambios realizados en este registro?\n" + " Nombre: " + var_nombre_maquina + "\n Referencia: " + var_referencia + "\n fecha ultimo mantenimiento: " + var_fecha_ult + "\n fecha proximo mantenimiento"+ var_fecha_new)
+                                            "Desea guardar los cambios realizados en este registro?\n" + " Nombre: " + var_nombre_maquina + "\n Referencia: " + var_referencia + "\n fecha ultimo mantenimiento: " + var_fecha_ult + "\n fecha proximo mantenimiento" + var_fecha_new)
             if search == "yes":
                 return True
             else:
@@ -843,14 +874,18 @@ class TopLevelModify():
         # --------------- LABELS WIDGETS ZONE -----------------
         Label(text_frame, text="Desea modificar este registro?", bg="#EFEDB1",
               font=("Verdana MS", "11", "normal")).grid(row=0, column=0, columnspan=3)
-        Label(text_frame, text=frame_mantenimiento.nombre_maquina, bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(row=1,
-                                                                                                          column=0)
-        Label(text_frame, text=frame_mantenimiento.referencia, bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(row=1, column=1)
-        Label(text_frame, text=frame_mantenimiento.fecha_ult, bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(row=1, column=2)
-        Label(text_frame, text=frame_mantenimiento.fecha_new, bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(
+        Label(text_frame, text=self.nombre_maquina, bg="#EFEDB1",
+              font=("Verdana MS", "11", "bold")).grid(row=1,
+                                                      column=0)
+        Label(text_frame, text=self.referencia, bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(
+            row=1, column=1)
+        Label(text_frame, text=self.fecha_ult, bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(
+            row=1, column=2)
+        Label(text_frame, text=self.fecha_new, bg="#EFEDB1", font=("Verdana MS", "11", "bold")).grid(
             row=1, column=3)
         # --------------- INBOX WIDGETS ZONE ------------------
-        Label(text_frame, text='ingrese el nombre de la maquina', bg="#EFEDB1", font=("Verdana MS", "11", "normal")).grid(
+        Label(text_frame, text='ingrese el nombre de la maquina', bg="#EFEDB1",
+              font=("Verdana MS", "11", "normal")).grid(
             row=2,
             column=0)
         n_inbox_nombre_maquina = Entry(text_frame, font=("Verdana MS", "11", "normal"), width=28)
@@ -858,12 +893,13 @@ class TopLevelModify():
         n_inbox_nombre_maquina.focus()
 
         Label(text_frame, text='Ingrese la referencia', bg="#EFEDB1", font=("Verdana MS", "11", "normal")).grid(row=2,
-                                                                                                                 column=1)
+                                                                                                                column=1)
         n_inbox_referencia = Entry(text_frame, font=("Verdana MS", "11", "normal"), width=20)
         n_inbox_referencia.grid(row=3, column=1)
 
-        Label(text_frame, text='ingrese ultimo mantenimiento', bg="#EFEDB1", font=("Verdana MS", "11", "normal")).grid(row=2,
-                                                                                                                column=2)
+        Label(text_frame, text='ingrese ultimo mantenimiento', bg="#EFEDB1", font=("Verdana MS", "11", "normal")).grid(
+            row=2,
+            column=2)
         n_inbox_fecha_ult = Entry(text_frame, font=("Verdana MS", "11", "normal"), width=30)
         n_inbox_fecha_ult.grid(row=3, column=2)
 
@@ -894,21 +930,21 @@ class TopLevelModify():
             new_nombre_maquina = n_inbox_nombre_maquina.get()
             new_referencia = n_inbox_referencia.get()
             new_fecha_ult = n_inbox_fecha_ult.get()
-            new_fecha_new= n_inbox_fecha_new.get()
+            new_fecha_new = n_inbox_fecha_new.get()
             a = modify_mesageBox(contact)
             if a:
                 _del_old(contact[0])
-                _add_new(new_nombre_maquina, new_referencia, new_fecha_ult,n_inbox_fecha_new)
+                _add_new(new_nombre_maquina, new_referencia, new_fecha_ult, n_inbox_fecha_new)
             window_modify.destroy()
 
-        def _add_new(nombre_maquina, referencia, fecha_ult,fecha_new):
+        def _add_new(nombre_maquina, referencia, fecha_ult, fecha_new):
             s_nombre_maquina = nombre_maquina
             s_referencia = referencia
             s_fecha_ult = fecha_ult
-            s_fecha_new=fecha_new
+            s_fecha_new = fecha_new
             with open('registro_mant.csv', 'a') as f:
                 writer = csv.writer(f, lineterminator='\r', delimiter=',')
-                writer.writerow((s_nombre_maquina, s_referencia, s_fecha_ult,s_fecha_new))
+                writer.writerow((s_nombre_maquina, s_referencia, s_fecha_ult, s_fecha_new))
 
         def _del_old(old_nombre_maquina):
             nombre_maquina = old_nombre_maquina
